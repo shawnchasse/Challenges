@@ -48,11 +48,11 @@ public class ArtistPairs
 
             String a = (String)artists[i];
             String b = (String)artists[j];
-            if ( artistBloomMap.get(a).getBitSet().cardinality() > 50 && artistBloomMap.get(b).getBitSet().cardinality() > 50 )
+            if ( artistBloomMap.get(a).getBitSet().cardinality() >= 50 && artistBloomMap.get(b).getBitSet().cardinality() >= 50 )
             {
                BitSet result = (BitSet)(artistBloomMap.get(a).getBitSet().clone());
                result.and(artistBloomMap.get(b).getBitSet());
-               if ( result.cardinality() > 50 )
+               if ( result.cardinality() >= 50 )
                {
 
                   if ( (a).compareTo(b) > 0 )
@@ -88,6 +88,7 @@ public class ArtistPairs
    {
       Object[] artists = artistMap.keySet().toArray();
       System.out.println("Total number of unique artists: " + artists.length);
+      int numberQualifiedPairs = 0;
       for ( int i = 0; i < artists.length; i++ )
       {
 	 for (int j = i+1; j < artists.length; j++ )
@@ -95,11 +96,11 @@ public class ArtistPairs
 	    
 	    String a = (String)artists[i];
 	    String b = (String)artists[j];
-	    if ( artistMap.get(a).cardinality() > 50 && artistMap.get(b).cardinality() > 50 )
+	    if ( artistMap.get(a).cardinality() >= 50 && artistMap.get(b).cardinality() >= 50 )
 	    {
 	       BitSet result = (BitSet)(artistMap.get(a).clone());
 	       result.and(artistMap.get(b));
-	       if ( result.cardinality() > 50 )
+	       if ( result.cardinality() >= 50 )
 	       {
 	       
 		  if ( (a).compareTo(b) > 0 )
@@ -110,26 +111,33 @@ public class ArtistPairs
 		  {
 		     System.out.println(a + "," + b);
 		  }
+                  numberQualifiedPairs++;
 	       }
+
 	    }
 	 }
       }
+      System.out.println("Total number of qualified pairs: " + numberQualifiedPairs );
    }
 
    public void printPairsInPairMap()
    {
       System.out.println("Total unique pairings: " + pairMap.size());
+      int numberQualifiedPairs = 0;
       for ( String key : pairMap.keySet() )
       {
-         if ( pairMap.get(key) > Integer.valueOf(50) )
+         if ( pairMap.get(key) >= Integer.valueOf(50) )
          {
             System.out.println(key);
+	    numberQualifiedPairs++;
          }
       }
+      System.out.println("Total number of qualifiedPairs: " + numberQualifiedPairs);
    }
 
    public void parseLineIntoPairMap(String[] oneLine)
    {
+
       for ( int i = 0; i < oneLine.length; i++ )
       {
 	 for ( int j = i+1; j < oneLine.length; j++ )

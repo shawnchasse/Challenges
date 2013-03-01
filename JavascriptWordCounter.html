@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.input { width:75%; }
+</style>
+<title>Shawn Chasse Javascript Frontend Challenge</title>
+</head>
+
+<body>
+   <script>
+      // simple helper function to get our 'input' element
+      function getInputElement()
+      {
+         var inputElem = document.getElementById("inputText");  // Find the element
+         return inputElem;
+      }
+      
+      // simple helper function to get our 'output' element
+      function getOutputElement()
+      {
+         var outputElem = document.getElementById("outputText");
+         return outputElem;
+      }
+      
+      // simple helper function to clear the 'output' element
+      function clearOutputText()
+      {
+         getOutputElement().innerHTML = "";
+      }
+      
+      function clearInputText()
+      {
+         getInputElement().value = "";
+      }
+      
+      // The main function to do the word counting. The goal is to read
+      // a bunch of text (in this case stored in a span on the page with
+      // id of "inputText" and to calculate the word frequency of all the words 
+      // in the text.
+      function parseInputText()
+      {
+         // clear the output area
+         clearOutputText();
+         // first get the text itself.
+         var text = getInputElement().value;
+         
+         if ( text )
+         {
+            // now perform a match on the text. find all words (0 or more followed by 0 or more single quotes ' followed by one or more words. 
+            // do this globally. What this does is get rid of all non-word characters such as period '.' comma ',' and double quote '"' etc.
+            // we do want to keep words such as "can't" that's why the match string isn't simply \w+
+            var splitText =  text.match(/\w*\'*\w+/g);
+            var length = splitText.length; // get the length (number of entries)
+            var countArray = new Object(); // instantiate our object array 
+            for( var i = 0; i < length; i++) 
+            {
+               var curTxt = splitText[i].toLowerCase(); // get the entry at i
+               if( curTxt in countArray ) // if the entry at i is already a key in the countArray simply increment its counter.
+               {
+                  countArray[curTxt] = countArray[curTxt] + 1;
+               }
+               else // otherwise set the countArray key to the current text value.
+               {
+                  countArray[curTxt] = 1;
+               }
+            }
+            var out = "";
+            // Now iterate through the countArray grabbing each key and value
+            // put in a string formatted such that 'key=value<br/>' so that each 
+            // key=value is on a separate line
+            for (key in countArray )
+            {
+               out += key + "=" + countArray[key] + "<br/>";
+            }
+            // finally replace the innerHTML of the output element with the 'out' string we just built.
+            getOutputElement().innerHTML = out;
+         }
+      }
+      
+   </script>
+   
+   <div>Enter text in the box below. The text will be parsed and the frequency of each word will be counted.</div>
+   <br>
+   <div class="input">
+      <textarea rows="10" cols="120" id="inputText">" Anyway, I keep picturing all these little kids playing some game in this big field of rye and all. Thousands 
+of little kids, and nobody's around - nobody big, I mean - except me. And I'm standing on the edge of some 
+crazy cliff. What I have to do, I have to catch everybody if they start to go over the cliff - I mean if they're 
+running and they don't look where they're going I have to come out from somewhere and catch them. That's 
+all I do all day. I'd just be the catcher in the rye and all. I know it's crazy, but that's the only thing I'd really 
+like to be. "</textarea>
+   </div>
+   <br>
+   <div>
+      <button type="button" onclick="parseInputText()">Parse input</button>
+      <button type="button" onclick="clearInputText()">Clear input</button>
+      <button type="button" onclick="clearOutputText()">Clear output</button>
+   </div>
+   <br>
+   <div>
+      <span id="outputText"></span>
+   </div>
+   
+   
+   
+   
+</body>
+</html>
